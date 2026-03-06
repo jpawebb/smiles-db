@@ -50,28 +50,6 @@ class User(BaseIDModel, table=True):
     }
 
 
-# Discovery entities
-class Discovery(BaseIDModel, table=True):
-    __tablename__ = "discoveries"
-
-    name: str
-    smiles: SmilesStr
-    molecular_weight: float = Field(default=0.0, index=True)
-
-    publisher_id: UUID = Field(foreign_key="publishers.id", nullable=False)
-    publisher: "Publisher" = Relationship(back_populates="discoveries")
-
-    @field_validator
-    def calculate_mw(cls, v, info):
-        smiles = info.data.get("smiles")
-        if smiles:
-            mol = Chem.MolFromSmiles(smiles)
-            if mol:
-                return float(Descriptors.MolWt(mol))
-            raise ValueError("Invalid SMILES string provided.")
-        return v
-
-
 class Publisher(User, table=True):
     __tablename__ = "publishers"
 
@@ -88,3 +66,27 @@ class Publisher(User, table=True):
         back_populates="publisher",
         sa_relationship_kwargs={"lazy": "selectin"},
     )
+
+
+# Discovery entities
+class Discovery(BaseIDModel, table=True):
+    __tablename__ = "discoveries"
+
+    name: str
+    smiles: SmilesStr = Field(index=True, unique=True, nullable=False)
+    molecular_weight: float = Field(default=0.0, index=True)
+
+    publisher_id: UUID = Field(foreign_key="users.id", nullable=False)
+
+    publisher: "Publisher" = Relationship(back_populates="discoveries")
+
+    @field_validator("molecular_weight")
+    @classmethod
+    def calculate_mw(cls, v, info):
+        smiles = info.data.get("smiles")
+        if smiles:
+            mol = Chem.MolFromSmiles(smiles)
+            if mol:
+                return float(Descriptors.MolWt(mol))
+            raise ValueError("Invalid SMILES string provided.")
+        return v
