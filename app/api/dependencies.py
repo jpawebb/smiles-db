@@ -8,7 +8,8 @@ from fastapi import Depends
 from app.database.models import Publisher
 
 from app.database.session import get_session
-from app.services.discoveries import DiscoveryService
+from app.services.discovery import DiscoveryService
+from app.services.publisher import PublisherService
 
 SessionDep = Annotated[AsyncSession, Depends(get_session)]
 
@@ -35,6 +36,17 @@ def get_discovery_service(session: SessionDep):
     )
 
 
+def get_publisher_service(session: SessionDep):
+    return PublisherService(session=session)
+
+
 PublisherDep = Annotated[Publisher, Depends(get_current_publisher)]
+
+
+PublisherServiceDep = Annotated[
+    PublisherService,
+    Depends(get_publisher_service),
+]
+
 
 DiscoveryServiceDep = Annotated[DiscoveryService, Depends(get_discovery_service)]

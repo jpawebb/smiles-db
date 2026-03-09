@@ -22,4 +22,12 @@ class DatabaseSettings(BaseSettings):
     model_config = _base_config
 
 
+class SecuritySettings(BaseSettings):
+    JWT_SECRET: str
+    JWT_ALGORITHM: str
+
+    model_config = _base_config
+
+
+security_settings = SecuritySettings()
 database_settings = DatabaseSettings()
