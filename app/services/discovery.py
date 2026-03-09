@@ -27,6 +27,7 @@ class DiscoveryService(BaseService):
         return await self._add(new_discovery)
 
     async def update(self):
+        # TODO: Resolve whether this should be possible and by what user type
         pass
 
     async def delete(self, id: UUID) -> None:
