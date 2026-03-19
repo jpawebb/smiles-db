@@ -6,7 +6,7 @@ from app.config import database_settings
 
 engine = create_async_engine(
     url=database_settings.POSTGRES_URL,
-    echo=True,
+    echo=False,
 )
 
 

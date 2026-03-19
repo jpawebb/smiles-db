@@ -1,7 +1,7 @@
 from typing import Annotated
 from pydantic import AfterValidator, field_validator
 from uuid import uuid4, UUID
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlmodel import SQLModel, Field, Relationship
 
 from rdkit import Chem
@@ -20,12 +20,12 @@ class BaseIDModel(SQLModel, table=False):
         nullable=False,
     )
     created_at: datetime = Field(
-        default_factory=lambda: datetime.now(),
+        default_factory=lambda: datetime.now(timezone.utc),
         nullable=False,
     )
     updated_on: datetime = Field(
-        default_factory=lambda: datetime.now(),
-        sa_column_kwargs={"onupdate": lambda: datetime.now()},
+        default_factory=lambda: datetime.now(timezone.utc),
+        sa_column_kwargs={"onupdate": lambda: datetime.now(timezone.utc)},
     )
 
 
