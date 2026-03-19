@@ -18,6 +18,6 @@ class PublisherRead(BaseModel):
     website: str
 
 
-class PublsherUpdate(BaseModel):
+class PublisherUpdate(BaseModel):
     # TODO: Allow full_name, website
     pass

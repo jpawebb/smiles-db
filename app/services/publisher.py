@@ -36,7 +36,7 @@ class PublisherService(BaseService):
     async def _generate_token(self, email, password) -> str:
         pub = await self._get_by_email(email)
 
-        if pub is None or not ph.verify(pub.password_hash, password):
+        if pub is None or not ph.verify(pub.hashed_password, password):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Email or password is incorrect",
@@ -46,7 +46,7 @@ class PublisherService(BaseService):
         return generate_access_token(
             data={
                 "publisher": {
-                    "name": pub.name,
+                    "name": pub.full_name,
                     "id": str(pub.id),
                 }
             }

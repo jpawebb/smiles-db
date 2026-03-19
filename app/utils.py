@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 
 import jwt
@@ -22,8 +22,8 @@ def generate_access_token(data: dict, expiry: timedelta = timedelta(minutes=30))
     return jwt.encode(
         payload={
             **data,
-            "jit": str(uuid4()),
-            "expiry": datetime.now() + expiry,
+            "jti": str(uuid4()),
+            "exp": datetime.now(timezone.utc) + expiry,
         },
         algorithm=security_settings.JWT_ALGORITHM,
         key=security_settings.JWT_SECRET,
