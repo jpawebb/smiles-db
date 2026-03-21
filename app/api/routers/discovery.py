@@ -10,9 +10,8 @@ router = APIRouter(
 )
 
 
-@router.get("/")
+@router.get("/", response_model=DiscoveryRead)
 async def get_discovery(id: UUID, _: PublisherDep, service: DiscoveryServiceDep):
-    # TODO: Anyone can get a discovery
     discovery = await service.get(id)
 
     if discovery is None:
@@ -30,5 +29,4 @@ async def post_discovery(
     discovery: DiscoveryCreate,
     service: DiscoveryServiceDep,
 ):
-    # TODO: Only an authenticated publisher can post a discovery
     return await service.add(discovery, publisher)
