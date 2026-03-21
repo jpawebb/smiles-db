@@ -19,6 +19,11 @@ def validate_smiles(v: str) -> str:
 
 
 def generate_access_token(data: dict, expiry: timedelta = timedelta(minutes=30)):
+    """Creates the JWT access token
+
+    Raises:
+        jwt.PyJWTError: If there is any error generating the token
+    """
     return jwt.encode(
         payload={
             **data,
@@ -27,4 +32,18 @@ def generate_access_token(data: dict, expiry: timedelta = timedelta(minutes=30))
         },
         algorithm=security_settings.JWT_ALGORITHM,
         key=security_settings.JWT_SECRET,
+    )
+
+
+def decode_access_token(token: str) -> dict:
+    """Decodes the JWT access token
+
+    Raises:
+        jwt.ExpiredSignatureError: If the token has expired
+        jwt.InvalidTokenError: If the token is invalid for any reason
+    """
+    return jwt.decode(
+        token,
+        key=security_settings.JWT_SECRET,
+        algorithms=[security_settings.JWT_ALGORITHM],
     )

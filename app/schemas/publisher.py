@@ -17,7 +17,9 @@ class PublisherRead(BaseModel):
     email: EmailStr
     website: str
 
+    model_config = {"from_attributes": True}
+
 
 class PublisherUpdate(BaseModel):
-    # TODO: Allow full_name, website
-    pass
+    full_name: str | None = None
+    website: str | None = None

@@ -64,3 +64,22 @@ class Discovery(BaseIDModel, table=True):
                 return float(Descriptors.MolWt(mol))
             raise ValueError("Invalid SMILES string provided.")
         return v
+
+
+class RevokedToken(BaseIDModel, table=True):
+    __tablename__ = "revoked_tokens"
+
+    id: UUID = Field(
+        default_factory=uuid4,
+        primary_key=True,
+        nullable=False,
+    )
+    jti: str = Field(
+        index=True,
+        unique=True,
+        nullable=False,
+    )
+    revoked_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
