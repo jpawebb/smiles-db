@@ -1,6 +1,6 @@
 from uuid import UUID
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class PublisherCreate(BaseModel):
@@ -14,7 +14,7 @@ class PublisherRead(BaseModel):
     id: UUID
     created_at: datetime
     full_name: str | None = None
-    email: EmailStr
+    email: EmailStr = Field(unique=True, index=True)
     website: str | None = None
 
     model_config = {"from_attributes": True}

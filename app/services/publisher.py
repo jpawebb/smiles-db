@@ -18,7 +18,7 @@ class PublisherService(BaseService):
         super().__init__(model=Publisher, session=session)
 
     async def add(self, publisher_create: PublisherCreate) -> Publisher:
-        # Check for dupelicates
+        """Add a new publisher to the database, ensuring email uniqueness and password hashing"""
         existing = await self._get_by_email(publisher_create.email)
         if existing is not None:
             raise HTTPException(
