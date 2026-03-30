@@ -13,9 +13,9 @@ class PublisherCreate(BaseModel):
 class PublisherRead(BaseModel):
     id: UUID
     created_at: datetime
-    full_name: str
+    full_name: str | None = None
     email: EmailStr
-    website: str
+    website: str | None = None
 
     model_config = {"from_attributes": True}
 
