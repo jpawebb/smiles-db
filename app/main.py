@@ -5,12 +5,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 
 from app.api.router import master_router
-from app.database.session import get_session, create_db_tables
+from app.database.session import get_session
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await create_db_tables()
     yield
 
 

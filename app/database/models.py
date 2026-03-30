@@ -3,6 +3,7 @@ from pydantic import AfterValidator, field_validator
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
 from sqlmodel import SQLModel, Field, Relationship
+from pydantic import EmailStr
 
 from rdkit import Chem
 from rdkit.Chem import Descriptors
@@ -32,7 +33,7 @@ class BaseIDModel(SQLModel, table=False):
 class Publisher(BaseIDModel, table=True):
     __tablename__ = "publishers"
 
-    email: str
+    email: EmailStr = Field(unique=True, index=True)
     hashed_password: str = Field(nullable=False)
     full_name: str | None = Field(default=None)
     website: str | None = Field(default=None)
