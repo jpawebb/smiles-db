@@ -1,4 +1,5 @@
 from uuid import UUID
+from datetime import datetime
 from pydantic import BaseModel
 from app.database.models import SmilesStr
 
@@ -14,5 +15,8 @@ class DiscoveryCreate(BaseDiscovery):
 
 class DiscoveryRead(BaseDiscovery):
     id: UUID
+    created_at: datetime
     molecular_weight: float
     publisher_id: UUID
+
+    model_config = {"from_attributes": True}
